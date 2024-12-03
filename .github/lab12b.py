@@ -36,9 +36,9 @@ def convert_to_morse_code(sentence):
     morse_code_list = []
     for char in sentence:
         if char == ' ':
-            morse_code_list.append(' ' * 7) 
+            morse_code_list.append(' ' * 7)  # 7 spaces to separate words
         else:
-            morse_code_list.append(morse_code_dict[char] + ' ' * 3) 
+            morse_code_list.append(morse_code_dict[char.upper()] + ' ' * 3)  # 3 spaces to separate letters
     return morse_code_list
 
 def display_morse_code(morse_code_list, unit_length):
@@ -49,9 +49,23 @@ def display_morse_code(morse_code_list, unit_length):
             elif symbol == '-':
                 light_led(3 * unit_length)
             else:
-                time.sleep(7 * unit_length) \
-        time.sleep(3 * unit_length) 
+                time.sleep(7 * unit_length)  # Sleep for 7 * unit length for word separation
+        time.sleep(3 * unit_length)  # Sleep for 3 * unit length for inter-letter pause
 
 def light_led(duration):
-    pixels.fill((255, 0, 0)) 
-   
+    pixels.fill((255, 0, 0))  # Turn on the LED (red color)
+    pixels.show()
+    time.sleep(duration)
+    pixels.fill((0, 0, 0))  # Turn off the LED
+    pixels.show()
+
+def main():
+    unit_length = prompt_unit_length()  # Get the unit length for timing
+    sentence = prompt_user()  # Get the sentence from the user
+    cleaned_sentence = remove_non_morse_chars(sentence)  # Clean the sentence (remove invalid chars)
+    morse_code_list = convert_to_morse_code(cleaned_sentence)  # Convert to Morse code
+    display_morse_code(morse_code_list, unit_length)  # Display the Morse code with LED
+
+if __name__ == "__main__":
+    main()
+#source chatgpt
